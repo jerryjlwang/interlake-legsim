@@ -1,4 +1,5 @@
 class PaymentsController < ApplicationController
+  include ElavonCredentials
 
   layout 'public'
   skip_before_action :authenticate_user!
@@ -25,12 +26,8 @@ class PaymentsController < ApplicationController
       render :has_license
     else
 
-      credentials_key = Rails.env == 'production' ? :production : :testing
-
       gateway = ActiveMerchant::Billing::ElavonGateway.new(
-        :login => Rails.application.credentials.elavon[credentials_key][:login], 
-        :user => Rails.application.credentials.elavon[credentials_key][:user],
-        :password => Rails.application.credentials.elavon[credentials_key][:password]
+        elavon_credentials
       )
 
       cc_exp_year = params[:payment][:cc_exp_year].length == 2 ? '20' + params[:payment][:cc_exp_year] : params[:payment][:cc_exp_year]

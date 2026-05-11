@@ -1,13 +1,11 @@
 class System::PaymentsController < SystemController
+  include ElavonCredentials
 
   def refund
     payment = User.find( params[:user_id] ).payments.find( params[:id] )
-    credentials_key = Rails.env == 'production' ? :production : :testing
 
     gateway = ActiveMerchant::Billing::ElavonGateway.new(
-      :login => Rails.application.credentials.elavon[credentials_key][:login], 
-      :user => Rails.application.credentials.elavon[credentials_key][:user],
-      :password => Rails.application.credentials.elavon[credentials_key][:password]
+      elavon_credentials
     )
 
     response = gateway.refund(nil, payment.transaction_id)
