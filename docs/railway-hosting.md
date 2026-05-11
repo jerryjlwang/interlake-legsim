@@ -111,3 +111,27 @@ Then visit `/system` on the deployed site.
 ## Notes
 
 Uploaded files currently use local Active Storage. That is OK for a first deploy, but files may be lost when the container is replaced unless you attach persistent storage or move Active Storage to S3-compatible storage such as Cloudflare R2.
+
+## If a deployment fails
+
+Open the failed service tile, then open the latest failed deployment logs. Check whether the failure happened in `Build Logs` or `Deploy Logs`.
+
+Common fixes:
+
+```text
+Connection refused - connect(2) for 127.0.0.1:6379
+```
+
+The service is trying to use local Redis. Make sure `REDIS_URL=${{Redis.REDIS_URL}}` is set on both web and worker services.
+
+```text
+Mysql2::Error::ConnectionError
+```
+
+Make sure the MySQL service exists, then verify the `MYSQLHOST`, `MYSQLPORT`, `MYSQLUSER`, `MYSQLPASSWORD`, and `MYSQLDATABASE` variables are set on the web service. If your database service is not named `MySQL`, update the variable references to match the real service name.
+
+```text
+Table '...' doesn't exist
+```
+
+Set the web service pre-deploy command to `bin/rails db:prepare`, then redeploy the web service.

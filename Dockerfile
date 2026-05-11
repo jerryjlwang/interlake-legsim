@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG RUBY_VERSION=3.1.2
-FROM ruby:${RUBY_VERSION}-slim-bookworm AS base
+FROM ruby:${RUBY_VERSION}-slim-bullseye AS base
 
 WORKDIR /rails
 

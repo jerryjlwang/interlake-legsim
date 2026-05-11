@@ -1,13 +1,13 @@
 <claude-mem-context>
 # Memory Context
 
-# [interlake-legsim] recent context, 2026-05-11 9:43am PDT
+# [interlake-legsim] recent context, 2026-05-11 9:47am PDT
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 23 obs (9,608t read) | 242,106t work | 96% savings
+Stats: 27 obs (11,144t read) | 330,752t work | 97% savings
 
 ### May 11, 2026
 297 8:54a 🔵 interlake-legsim: Rails App with MySQL Targeting Cloudflare Pages Deployment
@@ -33,6 +33,10 @@ Stats: 23 obs (9,608t read) | 242,106t work | 96% savings
 322 " ✅ Deployment Preparation 75% Complete — Steps 1-3 Done, Validation In Progress
 323 9:08a 🔴 Two Security/Reliability Fixes: Dockerfile Asset Precompile and Railway Host Regex Anchored
 324 " ✅ Railway Deployment Preparation Complete — All 4 Plan Steps Done, Ready to Commit and Push
+325 " 🔵 Railway UI Confusion: User Couldn't Find Where to Add MySQL/Redis Services After Creating Project
+326 " ✅ docs/railway-hosting.md Adds "Adding Services After Repo Import" Section for User's Exact Situation
+327 9:44a 🔐 Sentry DSN Hardcoded in Commented-Out config/initializers/sentry.rb
+328 " 🔵 config/initializers/sidekiq.rb Exists — Redis Connection Config Needs Verification for Railway
 
-Access 242k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 331k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>
