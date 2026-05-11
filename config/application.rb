@@ -17,15 +17,26 @@ module Legsim
     config.hosts << "ihs.legsim.westus2.cloudapp.azure.com"
     config.hosts << ENV["APP_HOST"] if ENV["APP_HOST"].present?
     if ENV["RAILWAY_ENVIRONMENT"].present?
+      config.hosts << "localhost"
+      config.hosts << "127.0.0.1"
       config.hosts << "healthcheck.railway.app"
+      config.hosts << /.*\.railway\.app\z/
       config.hosts << /.*\.up\.railway\.app\z/
     end
 
     config.active_record.legacy_connection_handling = false
 
-    gmail_credentials = Rails.application.credentials.gmail || {}
-    gmail_user_name = ENV["GMAIL_USER_NAME"].presence || gmail_credentials[:user_name]
-    gmail_password = ENV["GMAIL_PASSWORD"].presence || gmail_credentials[:password]
+    gmail_user_name = ENV["GMAIL_USER_NAME"].presence
+    gmail_password = ENV["GMAIL_PASSWORD"].presence
+
+    unless gmail_user_name.present? && gmail_password.present?
+      begin
+        gmail_credentials = Rails.application.credentials.gmail || {}
+        gmail_user_name ||= gmail_credentials[:user_name]
+        gmail_password ||= gmail_credentials[:password]
+      rescue StandardError
+      end
+    end
 
     if gmail_user_name.present? && gmail_password.present?
       config.action_mailer.delivery_method = :smtp

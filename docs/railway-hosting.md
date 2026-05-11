@@ -119,6 +119,18 @@ Open the failed service tile, then open the latest failed deployment logs. Check
 Common fixes:
 
 ```text
+Missing `secret_key_base` for 'production' environment
+```
+
+Set `SECRET_KEY_BASE` on the crashed service. Generate it locally with `openssl rand -hex 64`, or use Railway's variable generator.
+
+```text
+Missing encryption key to decrypt file with
+```
+
+Set `RAILS_MASTER_KEY` if you are deploying with `config/credentials.yml.enc`. If you are using environment variables instead, make sure the corresponding env vars are set so the app does not need encrypted credentials at boot.
+
+```text
 Connection refused - connect(2) for 127.0.0.1:6379
 ```
 
