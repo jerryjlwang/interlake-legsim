@@ -42,7 +42,7 @@ gem "sidekiq-scheduler", github: "sidekiq-scheduler/sidekiq-scheduler", branch: 
 gem 'image_processing'
 gem 'active_storage_validations'
 gem 'csv'
-gem 'mail'
+gem 'mail', '>= 2.8.1', '< 2.9'
 gem 'net-smtp', require: false
 
 gem 'sentry-raven'
