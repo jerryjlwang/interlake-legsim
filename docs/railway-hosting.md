@@ -124,6 +124,8 @@ Missing `secret_key_base` for 'production' environment
 
 Set `SECRET_KEY_BASE` on the crashed service. Generate it locally with `openssl rand -hex 64`, or use Railway's variable generator.
 
+In Railway, open the crashed Rails service, go to `Variables`, add `SECRET_KEY_BASE`, paste the generated value, save, then redeploy. Set it on the worker service too if you deploy Sidekiq from the same Rails app.
+
 ```text
 Missing encryption key to decrypt file with
 ```
