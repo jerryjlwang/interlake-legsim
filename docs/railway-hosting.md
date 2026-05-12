@@ -43,6 +43,8 @@ MYSQLDATABASE=${{MySQL.MYSQLDATABASE}}
 REDIS_URL=${{Redis.REDIS_URL}}
 ```
 
+If `REDIS_URL` resolves to an empty value, open the Redis service in Railway and copy its Redis connection variable from that service's `Variables` tab. Paste that exact reference into both the web and worker services. The service may have a different name than `Redis`, and the variable may be named differently depending on the Railway Redis template.
+
 Optional but usually needed:
 
 ```text
@@ -137,6 +139,12 @@ Connection refused - connect(2) for 127.0.0.1:6379
 ```
 
 The service is trying to use local Redis. Make sure `REDIS_URL=${{Redis.REDIS_URL}}` is set on both web and worker services.
+
+```text
+Invalid URL: ""
+```
+
+`REDIS_URL` is set to a blank value. Replace it with the Redis service reference from Railway, or delete the blank value while debugging.
 
 ```text
 Mysql2::Error::ConnectionError
