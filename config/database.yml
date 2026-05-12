@@ -7,7 +7,12 @@
 <%
 require "uri"
 
-raw_mysql_url = ENV["MYSQL_URL"].to_s
+env_value = ->(key) do
+  value = ENV[key].to_s
+  value unless value.empty?
+end
+
+raw_mysql_url = env_value.call("MYSQL_URL").to_s
 mysql_url = URI.parse(raw_mysql_url) unless raw_mysql_url.empty?
 mysql_credentials = begin
   Rails.application.credentials.dig(:database, :production) || {}
@@ -15,11 +20,11 @@ rescue StandardError
   {}
 end
 
-production_mysql_database = ENV["MYSQLDATABASE"] || ENV["DB_NAME"] || mysql_url&.path&.delete_prefix("/") || "legsim"
-production_mysql_username = ENV["MYSQLUSER"] || ENV["DB_USERNAME"] || mysql_url&.user || mysql_credentials[:username]
-production_mysql_host = ENV["MYSQLHOST"] || ENV["DB_HOST"] || mysql_url&.host || mysql_credentials[:host]
-production_mysql_port = ENV["MYSQLPORT"] || ENV["DB_PORT"] || mysql_url&.port || 3306
-production_mysql_password = ENV["MYSQLPASSWORD"] || ENV["DB_PASSWORD"] || mysql_url&.password || mysql_credentials[:password]
+production_mysql_database = env_value.call("MYSQLDATABASE") || env_value.call("DB_NAME") || mysql_url&.path&.delete_prefix("/") || "legsim"
+production_mysql_username = env_value.call("MYSQLUSER") || env_value.call("DB_USERNAME") || mysql_url&.user || mysql_credentials[:username]
+production_mysql_host = env_value.call("MYSQLHOST") || env_value.call("DB_HOST") || mysql_url&.host || mysql_credentials[:host]
+production_mysql_port = env_value.call("MYSQLPORT") || env_value.call("DB_PORT") || mysql_url&.port || 3306
+production_mysql_password = env_value.call("MYSQLPASSWORD") || env_value.call("DB_PASSWORD") || mysql_url&.password || mysql_credentials[:password]
 
 if ENV["RAILS_ENV"] == "production" && ENV["SECRET_KEY_BASE_DUMMY"].to_s.empty? && production_mysql_host.to_s.empty?
   raise "MYSQLHOST or MYSQL_URL is required in production"
