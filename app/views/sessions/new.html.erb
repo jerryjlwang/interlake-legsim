@@ -12,7 +12,7 @@
 
       <div id="loginButton"><%= submit_tag 'Log in', :size => 'ninety' %></div><br />
 
-      <div id="infoLink"><a href="http://info.legsim.org"><h2>Learn more about LegSim</h2></a><br /></div>
+      <div id="infoLink"><h2><%= link_to "Learn more about LegSim", help_path %></h2><br /></div>
 
       <div id="newButton"><%= link_button_to "Create New Account", new_user_path(), :size => 'ninety' %><br /></div>
 

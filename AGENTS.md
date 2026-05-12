@@ -1,33 +1,16 @@
 <claude-mem-context>
 # Memory Context
 
-# [interlake-legsim] recent context, 2026-05-11 9:47am PDT
+# [interlake-legsim] recent context, 2026-05-11 8:25pm PDT
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 27 obs (11,144t read) | 330,752t work | 97% savings
+Stats: 50 obs (19,178t read) | 887,300t work | 98% savings
 
 ### May 11, 2026
-297 8:54a 🔵 interlake-legsim: Rails App with MySQL Targeting Cloudflare Pages Deployment
-298 8:55a 🔵 Detailed interlake-legsim Stack: MySQL2 Native Gem + Rails Credentials + Azure Origin
-299 " 🔵 No Pre-compiled Assets in public/ — Rails Asset Pipeline Not Yet Run
-300 8:56a 🔵 public/assets Contains Only Static Media (Fonts/Images), No Compiled JS/CSS
-301 " 🔵 No Deployment Infrastructure Files Exist — No Dockerfile, Procfile, or Cloudflare Config
-307 " 🔵 Three Critical Sidekiq Cron Jobs Run Every Minute — Core App Functionality Requires Persistent Workers
-308 9:03a 🔵 Full Credentials Schema Mapped — 4 Secret Groups Required in credentials.yml.enc
-309 " ⚖️ Railway.app Evaluated as Hosting Platform for interlake-legsim
-311 " 🔵 Asset Pipeline Uses .css.erb Files — ERB Processing Required During Precompile
-312 " 🔵 Active Storage Used for Chamber Role Photos — Capistrano Links storage/ as Persistent Volume
-310 9:04a 🔵 Local Ruby Version Mismatch — System Ruby 2.6.10 Active Instead of Required 3.1.2
-313 9:05a 🔵 Railway CLI Not Installed on Developer Machine
-315 " 🟣 Railway Deployment Infrastructure Created — Dockerfile, railway.toml, Health Check, and Env-Var Config
-314 " ⚖️ Deployment Plan Decided: Prepare Railway-Compatible Rails Config Without Signing In
-316 9:06a 🔴 Dockerfile Fixed: mkdir -p Ensures Directories Exist Before chown
-317 " 🟣 ElavonCredentials Concern Extracts Payment Credentials to Support Env Vars
-318 " 🟣 docs/railway-hosting.md Created — Complete Railway Deployment Guide
-319 " ✅ Validation Passed — All Modified Ruby Files Syntax-OK, No Whitespace Errors, Docker Daemon Offline
+319 9:06a ✅ Validation Passed — All Modified Ruby Files Syntax-OK, No Whitespace Errors, Docker Daemon Offline
 320 9:07a ✅ .dockerignore Updated: credentials.yml.enc Allowed Into Image, master.key Still Excluded
 321 " ✅ railway.toml Healthcheck Moved to Dashboard Config — Worker Service Explicitly No Healthcheck
 322 " ✅ Deployment Preparation 75% Complete — Steps 1-3 Done, Validation In Progress
@@ -37,6 +20,46 @@ Stats: 27 obs (11,144t read) | 330,752t work | 97% savings
 326 " ✅ docs/railway-hosting.md Adds "Adding Services After Repo Import" Section for User's Exact Situation
 327 9:44a 🔐 Sentry DSN Hardcoded in Commented-Out config/initializers/sentry.rb
 328 " 🔵 config/initializers/sidekiq.rb Exists — Redis Connection Config Needs Verification for Railway
+329 9:47a 🔵 Railway Worker Crash: REDIS_URL Set to Empty String on Sidekiq Service
+330 6:28p 🔴 sidekiq.rb ENV.fetch Cannot Handle Empty REDIS_URL — Needs .presence Guard
+331 " 🔴 sidekiq.rb Fixed: ENV.fetch Replaced with .presence to Handle Empty REDIS_URL
+332 6:33p 🔵 Sidekiq Worker Now Fails at TCP Connect Stage — Redis URL Valid But Host Unreachable
+333 6:34p 🔴 sidekiq.rb Rebuilt with Railway Redis Fallback Using Individual REDISHOST/REDISPORT/REDISPASSWORD Vars
+334 " ✅ docs/railway-hosting.md Documents REDISHOST/REDISPORT/REDISUSER/REDISPASSWORD Fallback Variables
+335 6:42p 🔵 Docker Build Fails: sidekiq.rb Production Guard Runs During Asset Precompile
+336 " 🔴 sidekiq.rb Redis Guard Fixed: SECRET_KEY_BASE_DUMMY Skips Raise During Docker Build
+337 6:47p 🔵 Sidekiq Worker Runtime Confirms: REDIS_URL Not Set on Railway Worker Service — Guard Working Correctly
+338 6:50p 🔵 Railway Variable Reference Syntax: ${{ServiceName.VARIABLE_NAME}} Autocompletes in Dashboard
+339 6:53p 🔵 Railway Redis Autocomplete Not Appearing — Redis Service Likely Not Added to Project
+340 6:57p 🔵 Railway "Share Variables" Feature: Redis and MySQL Should Share to Web and Worker Services Only
+341 7:01p 🔵 ApplicationController Tracks Every User HTTP Action in Database — Potential Performance Concern
+342 " 🔵 User Model Uses localhost SMTP Directly — Bypasses Gmail ActionMailer Config, Will Fail in Production
+343 " 🔵 Login Flow Uses Devise-Based View with Course Dropdown — course_id Required for User Auth
+344 " 🔴 config/database.yml Rebuilt to Support MYSQL_URL Single Connection String and Credentials Fallback
+345 7:05p ✅ docs/railway-hosting.md Documents MYSQL_URL Single URL Option and Local Socket Error
+347 " 🔵 Railway MySQL Plugin Exposes MYSQL_URL Only — Individual Component Variables Are Empty
+348 " 🔵 Railway Shows Service as "Active" Even When Latest Build Failed — Running Previous Successful Deploy
+349 " 🔵 RAILS_ENV and RAILS_LOG_TO_STDOUT Already Set in Dockerfile — Don't Need to Be Set as Railway Service Variables
+346 " 🔵 database.yml ERB Preamble Validated — Both MYSQL_URL and Individual Vars Parse Correctly
+350 7:20p 🔴 config/database.yml Uses env_value Lambda to Treat Empty Env Vars as Absent
+351 7:21p 🔵 env_value Lambda Validated: Empty MYSQLUSER/PASSWORD Strings Correctly Fall Through to MYSQL_URL
+352 7:25p 🔵 config/database.yml Final State Confirmed — Complete ERB Preamble with env_value Helper
+353 " 🔴 database.yml Enhanced: Multiple MySQL URL Variable Names Tried, Username Guard Added, Whitespace Stripped
+354 7:26p 🔴 filter_map Replaced with map+compact for Ruby 2.6 Compatibility in database.yml ERB
+355 " ✅ database.yml Fully Validated with map.compact — All URL Variable Names and Production Guard Confirmed Working
+357 " 🔵 Worker Service Deployment Crashed — Missing Database or Redis Variables Most Likely Cause
+358 " ✅ database.yml Expanded MySQL Variable Coverage — DATABASE, MYSQL_DATABASE_URL, MYSQL_USER, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD Added
+356 " ✅ Railway Deployment Hardening Complete — 3 Files Ready to Commit and Push
+359 7:32p 🔵 database.yml Docker-Standard MySQL Variables Validated — MYSQL_USER and MYSQL_ROOT_PASSWORD Work Correctly
+360 7:33p 🔴 database.yml Adds url_value Lambda and Root Username Inference from URL Password
+361 " ✅ docs/railway-hosting.md Documents Blank-Username MySQL URL Pattern and Root Inference
+362 7:34p 🔵 Confirmed: Railway MySQL URL Format is mysql://:password@host — Blank Username Confirmed as Real Railway Pattern
+364 " 🔵 interlake-legsim Successfully Deployed on Railway — Hardcoded Legacy URLs Are New Blocker
+363 " ✅ database.yml and docs/railway-hosting.md Final State Confirmed — All Changes Validated and Ready to Commit
+365 7:40p 🔵 Hardcoded URL Audit: 4 Critical Locations Use Legacy Domains — system_user.rb, letter_user_recipient.rb, user.rb, production.rb
+366 " 🔵 APP_CONFIG['domain'] Will Raise NameError — legsim.rb Doesn't Define APP_CONFIG Constant
+367 " 🔴 Hardcoded Legacy URLs Fixed — LEGSIM_URL Constant Added to legsim.rb, All 4 URL Locations Updated
+368 " ✅ Hardcoded URL Fixes Validated — 6 Files Ready to Commit, legsim.rb Missing Newline Also Fixed
 
-Access 331k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 887k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>

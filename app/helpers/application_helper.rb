@@ -55,11 +55,18 @@ module ApplicationHelper
     content = Content.find_by_reference_and_chamber_id( reference, @current_chamber.id )
     if content
       edit_link = (!@current_chamber_role.nil? and @current_chamber_role.is_administrator?) ? link_to( "Edit Content", edit_admin_content_path( content ), :class => 'edit-content' ) : ''
-      ( content.copy + edit_link ).html_safe
+      ( rewrite_legacy_legsim_links( content.copy ) + edit_link ).html_safe
     else
       edit_link = (!@current_chamber_role.nil? and @current_chamber_role.is_administrator?) ? link_to( "Create Content", new_admin_content_path( :reference => reference ), :class => 'edit-content' ) : ''
       ( 'No Content Found' + edit_link ).html_safe
     end
+  end
+
+  def rewrite_legacy_legsim_links( html )
+    html.to_s
+        .gsub(/href=(["'])#{Regexp.escape(LEGACY_LEGSIM_INFO_URL)}/i) { "href=#{$1}#{LEGSIM_INFO_URL}" }
+        .gsub(/href=(["'])#{Regexp.escape(LEGSIM_INFO_ARCHIVE_URL)}/i) { "href=#{$1}#{LEGSIM_INFO_URL}" }
+        .gsub(/href=(["'])https?:\/\/(?:www|beta)\.legsim\.org/i) { "href=#{$1}#{LEGSIM_URL}" }
   end
 
 end
