@@ -43,6 +43,12 @@ MYSQLDATABASE=${{MySQL.MYSQLDATABASE}}
 REDIS_URL=${{Redis.REDIS_URL}}
 ```
 
+If Railway exposes one MySQL URL, you can set this instead of the five separate MySQL variables:
+
+```text
+MYSQL_URL=${{MySQL.MYSQL_URL}}
+```
+
 If `REDIS_URL` resolves to an empty value, open the Redis service in Railway and copy its Redis connection variable from that service's `Variables` tab. Paste that exact reference into both the web and worker services. The service may have a different name than `Redis`, and the variable may be named differently depending on the Railway Redis template.
 
 If Railway exposes Redis as separate fields instead of one URL, set these on both web and worker services:
@@ -162,6 +168,12 @@ Mysql2::Error::ConnectionError
 ```
 
 Make sure the MySQL service exists, then verify the `MYSQLHOST`, `MYSQLPORT`, `MYSQLUSER`, `MYSQLPASSWORD`, and `MYSQLDATABASE` variables are set on the web service. If your database service is not named `MySQL`, update the variable references to match the real service name.
+
+```text
+Can't connect to local MySQL server through socket '/run/mysqld/mysqld.sock'
+```
+
+The Rails service did not receive a MySQL host, so the MySQL client tried the container's local socket. Set `MYSQL_URL=${{MySQL.MYSQL_URL}}`, or set all five separate `MYSQLHOST`, `MYSQLPORT`, `MYSQLUSER`, `MYSQLPASSWORD`, and `MYSQLDATABASE` variables on the web service. Set them on the worker too because Sidekiq jobs boot Rails models.
 
 ```text
 Table '...' doesn't exist

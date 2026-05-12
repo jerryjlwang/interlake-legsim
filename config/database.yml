@@ -4,6 +4,27 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
 #
+<%
+require "uri"
+
+raw_mysql_url = ENV["MYSQL_URL"].to_s
+mysql_url = URI.parse(raw_mysql_url) unless raw_mysql_url.empty?
+mysql_credentials = begin
+  Rails.application.credentials.dig(:database, :production) || {}
+rescue StandardError
+  {}
+end
+
+production_mysql_database = ENV["MYSQLDATABASE"] || ENV["DB_NAME"] || mysql_url&.path&.delete_prefix("/") || "legsim"
+production_mysql_username = ENV["MYSQLUSER"] || ENV["DB_USERNAME"] || mysql_url&.user || mysql_credentials[:username]
+production_mysql_host = ENV["MYSQLHOST"] || ENV["DB_HOST"] || mysql_url&.host || mysql_credentials[:host]
+production_mysql_port = ENV["MYSQLPORT"] || ENV["DB_PORT"] || mysql_url&.port || 3306
+production_mysql_password = ENV["MYSQLPASSWORD"] || ENV["DB_PASSWORD"] || mysql_url&.password || mysql_credentials[:password]
+
+if ENV["RAILS_ENV"] == "production" && ENV["SECRET_KEY_BASE_DUMMY"].to_s.empty? && production_mysql_host.to_s.empty?
+  raise "MYSQLHOST or MYSQL_URL is required in production"
+end
+%>
 default: &default
   adapter: mysql2
   encoding: utf8mb4
@@ -32,10 +53,10 @@ test:
 
 production:
   <<: *default
-  database: <%= ENV["MYSQLDATABASE"] || ENV["DB_NAME"] || "legsim" %>
-  username: <%= ENV["MYSQLUSER"] || ENV["DB_USERNAME"] || Rails.application.credentials.dig(:database, :production, :username) %>
-  host: <%= ENV["MYSQLHOST"] || ENV["DB_HOST"] || Rails.application.credentials.dig(:database, :production, :host) %>
-  port: <%= ENV["MYSQLPORT"] || ENV["DB_PORT"] || 3306 %>
+  database: <%= production_mysql_database.to_s.inspect %>
+  username: <%= production_mysql_username.to_s.inspect %>
+  host: <%= production_mysql_host.to_s.inspect %>
+  port: <%= production_mysql_port %>
   reconnect: true
-  password: <%= ENV["MYSQLPASSWORD"] || ENV["DB_PASSWORD"] || Rails.application.credentials.dig(:database, :production, :password) %>
+  password: <%= production_mysql_password.to_s.inspect %>
   read_timeout: 5000
