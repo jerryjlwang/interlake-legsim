@@ -45,6 +45,15 @@ REDIS_URL=${{Redis.REDIS_URL}}
 
 If `REDIS_URL` resolves to an empty value, open the Redis service in Railway and copy its Redis connection variable from that service's `Variables` tab. Paste that exact reference into both the web and worker services. The service may have a different name than `Redis`, and the variable may be named differently depending on the Railway Redis template.
 
+If Railway exposes Redis as separate fields instead of one URL, set these on both web and worker services:
+
+```text
+REDISHOST=${{Redis.REDISHOST}}
+REDISPORT=${{Redis.REDISPORT}}
+REDISUSER=${{Redis.REDISUSER}}
+REDISPASSWORD=${{Redis.REDISPASSWORD}}
+```
+
 Optional but usually needed:
 
 ```text
@@ -139,6 +148,8 @@ Connection refused - connect(2) for 127.0.0.1:6379
 ```
 
 The service is trying to use local Redis. Make sure `REDIS_URL=${{Redis.REDIS_URL}}` is set on both web and worker services.
+
+If Railway exposes separate Redis variables instead, set `REDISHOST`, `REDISPORT`, `REDISUSER`, and `REDISPASSWORD` on the crashed service.
 
 ```text
 Invalid URL: ""
