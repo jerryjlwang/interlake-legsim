@@ -21,7 +21,9 @@ end
 redis_url = ENV["REDIS_URL"].presence || railway_redis_url
 
 if redis_url.blank?
-  raise "REDIS_URL is required in production" if Rails.env.production?
+  if Rails.env.production? && ENV["SECRET_KEY_BASE_DUMMY"].blank?
+    raise "REDIS_URL is required in production"
+  end
 
   redis_url = "redis://localhost:6379/0"
 end
