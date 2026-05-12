@@ -1,4 +1,7 @@
 LEGSIM_COPYRIGHT = '2001 - 2020'
+LEGSIM_HOST = ENV.fetch("APP_HOST", "www.legsim.org").delete_prefix("http://").delete_prefix("https://").delete_suffix("/")
+LEGSIM_PROTOCOL = ENV.fetch("APP_PROTOCOL", "https")
+LEGSIM_URL = "#{LEGSIM_PROTOCOL}://#{LEGSIM_HOST}"
 
 Time::DATE_FORMATS[:long_with_time] = "%B %e, %Y %I:%M %p"
 Time::DATE_FORMATS[:long] = "%B %e, %Y"

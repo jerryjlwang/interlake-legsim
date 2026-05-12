@@ -59,11 +59,11 @@ END_OF_MESSAGE
   protected
 
     def activation_url
-      "http://beta.legsim.org/system/activate/#{activation_code}"
+      "#{LEGSIM_URL}/system/activate/#{activation_code}"
     end
 
     def password_reset_url
-      "http://beta.legsim.org/system/reset_password/#{password_reset_code}"
+      "#{LEGSIM_URL}/system/reset_password/#{password_reset_code}"
     end
 
     def make_password_reset_code

@@ -149,11 +149,11 @@ END_OF_MESSAGE
   end
 
   def activation_url
-    "http://#{APP_CONFIG['domain']}/activate/#{activation_code}"
+    "#{LEGSIM_URL}/activate/#{activation_code}"
   end
 
   def password_reset_url
-    "http://#{APP_CONFIG['domain']}/reset_password/#{password_reset_code}"
+    "#{LEGSIM_URL}/reset_password/#{password_reset_code}"
   end
 
   protected

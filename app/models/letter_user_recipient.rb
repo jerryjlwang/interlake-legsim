@@ -27,8 +27,8 @@ class LetterUserRecipient < ActiveRecord::Base
     msg = <<END_OF_MESSAGE
 #{letter.message}
 ---
-Reply: https://www.legsim.org/letters/#{letter.id}/reply
-Reply All: https://www.legsim.org/letters/#{letter.id}/reply_all
+Reply: #{LEGSIM_URL}/letters/#{letter.id}/reply
+Reply All: #{LEGSIM_URL}/letters/#{letter.id}/reply_all
 Delivered To: #{letter.recipient_string}
 Chamber: #{chamber_role.chamber.course_title}
 END_OF_MESSAGE
