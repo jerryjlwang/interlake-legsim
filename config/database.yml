@@ -18,20 +18,26 @@ raw_mysql_url = [
   "MYSQL_PRIVATE_URL",
   "DATABASE_PRIVATE_URL",
   "MYSQL_PUBLIC_URL",
-  "DATABASE_PUBLIC_URL"
+  "DATABASE_PUBLIC_URL",
+  "DATABASE",
+  "MYSQL_DATABASE_URL"
 ].map { |key| env_value.call(key) }.compact.first.to_s
 mysql_url = URI.parse(raw_mysql_url) unless raw_mysql_url.empty?
+url_value = ->(value) do
+  value = value.to_s.strip
+  value unless value.empty?
+end
 mysql_credentials = begin
   Rails.application.credentials.dig(:database, :production) || {}
 rescue StandardError
   {}
 end
 
-production_mysql_database = env_value.call("MYSQLDATABASE") || env_value.call("DB_NAME") || mysql_url&.path&.delete_prefix("/") || "legsim"
-production_mysql_username = env_value.call("MYSQLUSER") || env_value.call("DB_USERNAME") || mysql_url&.user || mysql_credentials[:username]
-production_mysql_host = env_value.call("MYSQLHOST") || env_value.call("DB_HOST") || mysql_url&.host || mysql_credentials[:host]
+production_mysql_database = env_value.call("MYSQLDATABASE") || env_value.call("DB_NAME") || url_value.call(mysql_url&.path&.delete_prefix("/")) || "legsim"
+production_mysql_username = env_value.call("MYSQLUSER") || env_value.call("DB_USERNAME") || env_value.call("MYSQL_USER") || url_value.call(mysql_url&.user) || ("root" if url_value.call(mysql_url&.password)) || mysql_credentials[:username]
+production_mysql_host = env_value.call("MYSQLHOST") || env_value.call("DB_HOST") || url_value.call(mysql_url&.host) || mysql_credentials[:host]
 production_mysql_port = env_value.call("MYSQLPORT") || env_value.call("DB_PORT") || mysql_url&.port || 3306
-production_mysql_password = env_value.call("MYSQLPASSWORD") || env_value.call("DB_PASSWORD") || mysql_url&.password || mysql_credentials[:password]
+production_mysql_password = env_value.call("MYSQLPASSWORD") || env_value.call("DB_PASSWORD") || env_value.call("MYSQL_PASSWORD") || env_value.call("MYSQL_ROOT_PASSWORD") || url_value.call(mysql_url&.password) || mysql_credentials[:password]
 
 if ENV["RAILS_ENV"] == "production" && ENV["SECRET_KEY_BASE_DUMMY"].to_s.empty?
   raise "MYSQLHOST or a MySQL connection URL is required in production" if production_mysql_host.to_s.empty?

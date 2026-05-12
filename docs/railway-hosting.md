@@ -51,6 +51,8 @@ MYSQL_URL=${{MySQL.MYSQL_URL}}
 
 The app also accepts `DATABASE_URL`, `MYSQL_PRIVATE_URL`, `DATABASE_PRIVATE_URL`, `MYSQL_PUBLIC_URL`, or `DATABASE_PUBLIC_URL` if those are the URL names your MySQL service exposes.
 
+Some Railway MySQL URLs are shaped like `mysql://:password@host:3306/database`, with a blank username. In that case, the app treats the user as `root`. You can also set `MYSQLUSER=root` explicitly on the web and worker services.
+
 If `REDIS_URL` resolves to an empty value, open the Redis service in Railway and copy its Redis connection variable from that service's `Variables` tab. Paste that exact reference into both the web and worker services. The service may have a different name than `Redis`, and the variable may be named differently depending on the Railway Redis template.
 
 If Railway exposes Redis as separate fields instead of one URL, set these on both web and worker services:
