@@ -8,11 +8,18 @@
 require "uri"
 
 env_value = ->(key) do
-  value = ENV[key].to_s
+  value = ENV[key].to_s.strip
   value unless value.empty?
 end
 
-raw_mysql_url = env_value.call("MYSQL_URL").to_s
+raw_mysql_url = [
+  "MYSQL_URL",
+  "DATABASE_URL",
+  "MYSQL_PRIVATE_URL",
+  "DATABASE_PRIVATE_URL",
+  "MYSQL_PUBLIC_URL",
+  "DATABASE_PUBLIC_URL"
+].map { |key| env_value.call(key) }.compact.first.to_s
 mysql_url = URI.parse(raw_mysql_url) unless raw_mysql_url.empty?
 mysql_credentials = begin
   Rails.application.credentials.dig(:database, :production) || {}
@@ -26,8 +33,9 @@ production_mysql_host = env_value.call("MYSQLHOST") || env_value.call("DB_HOST")
 production_mysql_port = env_value.call("MYSQLPORT") || env_value.call("DB_PORT") || mysql_url&.port || 3306
 production_mysql_password = env_value.call("MYSQLPASSWORD") || env_value.call("DB_PASSWORD") || mysql_url&.password || mysql_credentials[:password]
 
-if ENV["RAILS_ENV"] == "production" && ENV["SECRET_KEY_BASE_DUMMY"].to_s.empty? && production_mysql_host.to_s.empty?
-  raise "MYSQLHOST or MYSQL_URL is required in production"
+if ENV["RAILS_ENV"] == "production" && ENV["SECRET_KEY_BASE_DUMMY"].to_s.empty?
+  raise "MYSQLHOST or a MySQL connection URL is required in production" if production_mysql_host.to_s.empty?
+  raise "MYSQLUSER or a MySQL connection URL with a username is required in production" if production_mysql_username.to_s.empty?
 end
 %>
 default: &default
