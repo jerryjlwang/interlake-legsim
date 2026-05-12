@@ -1,19 +1,15 @@
 <claude-mem-context>
 # Memory Context
 
-# [interlake-legsim] recent context, 2026-05-11 8:25pm PDT
+# [interlake-legsim] recent context, 2026-05-11 10:04pm PDT
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 50 obs (19,178t read) | 887,300t work | 98% savings
+Stats: 50 obs (19,602t read) | 960,659t work | 98% savings
 
 ### May 11, 2026
-319 9:06a ✅ Validation Passed — All Modified Ruby Files Syntax-OK, No Whitespace Errors, Docker Daemon Offline
-320 9:07a ✅ .dockerignore Updated: credentials.yml.enc Allowed Into Image, master.key Still Excluded
-321 " ✅ railway.toml Healthcheck Moved to Dashboard Config — Worker Service Explicitly No Healthcheck
-322 " ✅ Deployment Preparation 75% Complete — Steps 1-3 Done, Validation In Progress
 323 9:08a 🔴 Two Security/Reliability Fixes: Dockerfile Asset Precompile and Railway Host Regex Anchored
 324 " ✅ Railway Deployment Preparation Complete — All 4 Plan Steps Done, Ready to Commit and Push
 325 " 🔵 Railway UI Confusion: User Couldn't Find Where to Add MySQL/Redis Services After Creating Project
@@ -60,6 +56,10 @@ Stats: 50 obs (19,178t read) | 887,300t work | 98% savings
 366 " 🔵 APP_CONFIG['domain'] Will Raise NameError — legsim.rb Doesn't Define APP_CONFIG Constant
 367 " 🔴 Hardcoded Legacy URLs Fixed — LEGSIM_URL Constant Added to legsim.rb, All 4 URL Locations Updated
 368 " ✅ Hardcoded URL Fixes Validated — 6 Files Ready to Commit, legsim.rb Missing Newline Also Fixed
+369 " 🔵 info.legsim.org Links Are Now Inactive — Primarily in Tutorial/Instruction Content YAML Files
+370 8:26p 🔵 Comprehensive info.legsim.org Audit: PDFs Don't Exist Locally — No Replacement URL Available Yet
+372 " 🔴 info.legsim.org Links Fixed — LEGSIM_INFO_URL Constant Added with Wayback Machine Fallback
+371 8:27p 🔵 Scenario YAML Content Loads Into Database — Fixing YAML Files Won't Fix Existing info.legsim.org Links in DB
 
-Access 887k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 961k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>

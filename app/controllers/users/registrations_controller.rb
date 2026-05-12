@@ -20,6 +20,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       @user = @authorization_code.chamber.course.users.new( user_params )
       if @user && @user.valid?
         @user.skip_confirmation_notification!
+        @user.skip_confirmation! if auto_confirm_users?
         @user.save!
         chamber_role = @authorization_code.create_chamber_role( @user )
       end
@@ -31,18 +32,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.persisted? && @user.errors.empty? && chamber_role.errors.empty?
 
       session[:registered_user_id] = @user.id
+      @registered_user = @user
 
       if chamber_role.is_member?
 
         if @user.course.payment_elavon?
           redirect_to payments_elavon_path
         elsif @user.course.payment_prepaid?
-          @user.send_confirmation_instructions
+          confirm_or_send_confirmation_instructions(@user)
           render 'payments/prepaid_complete'
         end
 
       else
-        @user.send_confirmation_instructions
+        confirm_or_send_confirmation_instructions(@user)
         render 'payments/prepaid_complete'
       end
 

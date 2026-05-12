@@ -6,6 +6,7 @@ LEGACY_LEGSIM_INFO_URL = "http://info.legsim.org"
 LEGSIM_INFO_ARCHIVE_URL = "https://web.archive.org/web/20200801000000/#{LEGACY_LEGSIM_INFO_URL}"
 legsim_info_url = ENV["LEGSIM_INFO_URL"].to_s.strip
 LEGSIM_INFO_URL = (legsim_info_url.empty? ? LEGSIM_INFO_ARCHIVE_URL : legsim_info_url).delete_suffix("/")
+AUTO_CONFIRM_USERS = %w[1 true yes on].include?(ENV["AUTO_CONFIRM_USERS"].to_s.downcase)
 
 Time::DATE_FORMATS[:long_with_time] = "%B %e, %Y %I:%M %p"
 Time::DATE_FORMATS[:long] = "%B %e, %Y"

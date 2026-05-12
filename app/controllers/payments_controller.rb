@@ -9,7 +9,7 @@ class PaymentsController < ApplicationController
 
   def elavon
     if @registered_user.has_license?
-      @registered_user.send_confirmation_instructions unless @registered_user.confirmed?
+      confirm_or_send_confirmation_instructions(@registered_user)
       render :has_license
     else
       @payment = { 
@@ -22,7 +22,7 @@ class PaymentsController < ApplicationController
   def elavon_checkout
 
     if @registered_user.has_license?
-      @registered_user.send_confirmation_instructions unless @registered_user.confirmed?
+      confirm_or_send_confirmation_instructions(@registered_user)
       render :has_license
     else
 
@@ -80,7 +80,7 @@ class PaymentsController < ApplicationController
             test: response.test
           )
 
-          @registered_user.send_confirmation_instructions
+          confirm_or_send_confirmation_instructions(@registered_user)
           render :complete
         else
 

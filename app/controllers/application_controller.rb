@@ -3,6 +3,7 @@
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
+  helper_method :auto_confirm_users?
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -86,6 +87,18 @@ class ApplicationController < ActionController::Base
       flash[type] = [msg]
     else
       flash[type] << msg
+    end
+  end
+
+  def auto_confirm_users?
+    AUTO_CONFIRM_USERS
+  end
+
+  def confirm_or_send_confirmation_instructions(user)
+    if auto_confirm_users?
+      user.confirm unless user.confirmed?
+    else
+      user.send_confirmation_instructions unless user.confirmed?
     end
   end
 
